@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ProtectedShell from "@/components/ProtectedShell";
+import WeatherWidget from "@/components/WeatherWidget";
 
 const CARDS = [
   { href: "/projects", label: "프로젝트", desc: "개발과제 생성 및 F702-1 개발계획서" },
@@ -14,6 +15,7 @@ export default function DashboardPage() {
   return (
     <ProtectedShell>
       <div className="space-y-6">
+        <WeatherWidget />
         <div>
           <h1 className="text-lg font-semibold text-gray-900">대시보드</h1>
           <p className="text-sm text-gray-500">

@@ -15,6 +15,7 @@ OP-702 설계관리절차서 기반의 설계관리 웹 시스템. 상세 설계
 3. `.env.local.example`을 `.env.local`로 복사하고 Firebase 웹앱 설정값 채우기
 4. (선택) Firebase CLI로 보안 규칙 배포: `firebase deploy --only firestore:rules,storage`
 5. 초기 관리자 계정은 Firebase 콘솔 Authentication에서 직접 생성 후, 앱에 로그인하면 `users` 컬렉션에 문서가 자동 생성됨 → `/masters/users`에서 역할을 `CEO`로 지정
+6. (선택) 대시보드 날씨 위젯: [공공데이터포털](https://www.data.go.kr)에서 "기상청_단기예보 ((구)_동네예보) 조회서비스" API 신청 → 발급받은 서비스키(디코딩된 값)를 `.env.local`의 `WEATHER_SERVICE_KEY`에 입력 (Vercel 배포 시 Environment Variables에도 동일하게 등록)
 
 ## 로컬 실행
 
