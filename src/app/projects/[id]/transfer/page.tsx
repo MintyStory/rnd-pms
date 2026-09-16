@@ -6,11 +6,13 @@ import { useParams } from "next/navigation";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProtectedShell from "@/components/ProtectedShell";
+import DocumentActionBar from "@/components/DocumentActionBar";
 import DocumentMetaFields from "@/components/DocumentMetaFields";
 import DocumentSaveBar from "@/components/DocumentSaveBar";
 import RevisionHistoryTable from "@/components/RevisionHistoryTable";
 import LinkedItemsSelect from "@/components/LinkedItemsSelect";
 import ApprovalGate from "@/components/ApprovalGate";
+import MarkdownField from "@/components/MarkdownField";
 import { useDocumentRecord } from "@/lib/use-document-record";
 import { useAuth } from "@/lib/auth-context";
 import type { F702_8_Content, Project, UserRole, Vendor } from "@/types";
@@ -81,13 +83,16 @@ export default function TransferReportPage() {
   return (
     <ProtectedShell>
       <div className="space-y-6">
-        <div>
-          <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
-            ← {project.name}
-          </Link>
-          <h1 className="mt-2 text-lg font-semibold text-gray-900">
-            F702-8 설계 및 개발 이관보고서 — {project.name}
-          </h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
+              ← {project.name}
+            </Link>
+            <h1 className="mt-2 text-lg font-semibold text-gray-900">
+              F702-8 설계 및 개발 이관보고서 — {project.name}
+            </h1>
+          </div>
+          <DocumentActionBar projectId={projectId} formPath="transfer" active="edit" />
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
@@ -175,19 +180,12 @@ export default function TransferReportPage() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">
-                11.2 판매 후 정보 반영
-              </label>
-              <textarea
-                value={content.postMarketUpdateNote}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, postMarketUpdateNote: e.target.value }))
-                }
-                rows={2}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="11.2 판매 후 정보 반영"
+              value={content.postMarketUpdateNote}
+              onChange={(v) => setContent((c) => ({ ...c, postMarketUpdateNote: v }))}
+              rows={2}
+            />
           </div>
 
           <DocumentSaveBar

@@ -6,10 +6,12 @@ import { useParams } from "next/navigation";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProtectedShell from "@/components/ProtectedShell";
+import DocumentActionBar from "@/components/DocumentActionBar";
 import DocumentMetaFields from "@/components/DocumentMetaFields";
 import DocumentSaveBar from "@/components/DocumentSaveBar";
 import RevisionHistoryTable from "@/components/RevisionHistoryTable";
 import ApprovalGate from "@/components/ApprovalGate";
+import MarkdownField from "@/components/MarkdownField";
 import { useDocumentRecord } from "@/lib/use-document-record";
 import { useAuth } from "@/lib/auth-context";
 import type { F702_7_Content, Project, UserRole } from "@/types";
@@ -71,13 +73,16 @@ export default function ChangeRequestPage() {
   return (
     <ProtectedShell>
       <div className="space-y-6">
-        <div>
-          <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
-            ← {project.name}
-          </Link>
-          <h1 className="mt-2 text-lg font-semibold text-gray-900">
-            F702-7 설계변경요청서 — {project.name}
-          </h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
+              ← {project.name}
+            </Link>
+            <h1 className="mt-2 text-lg font-semibold text-gray-900">
+              F702-7 설계변경요청서 — {project.name}
+            </h1>
+          </div>
+          <DocumentActionBar projectId={projectId} formPath="change-request" active="edit" />
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
@@ -93,19 +98,12 @@ export default function ChangeRequestPage() {
           />
 
           <div className="space-y-4 rounded border border-gray-200 bg-white p-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">
-                12.1 변경 사항 및 사유
-              </label>
-              <textarea
-                value={content.changeDescription}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, changeDescription: e.target.value }))
-                }
-                rows={3}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="12.1 변경 사항 및 사유"
+              value={content.changeDescription}
+              onChange={(v) => setContent((c) => ({ ...c, changeDescription: v }))}
+              rows={3}
+            />
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium text-gray-700">
@@ -129,31 +127,19 @@ export default function ChangeRequestPage() {
               </select>
             </div>
 
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">
-                12.2 변경 범위 (해당 설계 및 개발 단계 등)
-              </label>
-              <textarea
-                value={content.scope}
-                onChange={(e) => setContent((c) => ({ ...c, scope: e.target.value }))}
-                rows={2}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="12.2 변경 범위 (해당 설계 및 개발 단계 등)"
+              value={content.scope}
+              onChange={(v) => setContent((c) => ({ ...c, scope: v }))}
+              rows={2}
+            />
 
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">
-                12.5 영향평가 (구성품/생산중·인도제품/위험관리/제품실현 프로세스 입출력)
-              </label>
-              <textarea
-                value={content.impactAssessment}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, impactAssessment: e.target.value }))
-                }
-                rows={3}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="12.5 영향평가 (구성품/생산중·인도제품/위험관리/제품실현 프로세스 입출력)"
+              value={content.impactAssessment}
+              onChange={(v) => setContent((c) => ({ ...c, impactAssessment: v }))}
+              rows={3}
+            />
 
             <label className="flex items-center gap-2 text-sm text-gray-700">
               <input

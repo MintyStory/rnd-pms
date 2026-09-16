@@ -6,10 +6,12 @@ import { useParams } from "next/navigation";
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProtectedShell from "@/components/ProtectedShell";
+import DocumentActionBar from "@/components/DocumentActionBar";
 import DocumentMetaFields from "@/components/DocumentMetaFields";
 import DocumentSaveBar from "@/components/DocumentSaveBar";
 import RevisionHistoryTable from "@/components/RevisionHistoryTable";
 import LinkedItemsSelect from "@/components/LinkedItemsSelect";
+import MarkdownField from "@/components/MarkdownField";
 import { useDocumentRecord } from "@/lib/use-document-record";
 import type { DocumentRecord, F702_6_Content, Project } from "@/types";
 import { COMPLIANCE_STATUSES } from "@/types";
@@ -78,13 +80,20 @@ export default function VerificationReportPage() {
   return (
     <ProtectedShell>
       <div className="space-y-6">
-        <div>
-          <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
-            ← {project.name}
-          </Link>
-          <h1 className="mt-2 text-lg font-semibold text-gray-900">
-            F702-6 검증 및 유효성확인 보고서 — {project.name}
-          </h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
+              ← {project.name}
+            </Link>
+            <h1 className="mt-2 text-lg font-semibold text-gray-900">
+              F702-6 검증 및 유효성확인 보고서 — {project.name}
+            </h1>
+          </div>
+          <DocumentActionBar
+            projectId={projectId}
+            formPath="verification-report"
+            active="edit"
+          />
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
@@ -98,19 +107,12 @@ export default function VerificationReportPage() {
           />
 
           <div className="space-y-4 rounded border border-gray-200 bg-white p-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">
-                검증/유효성확인 결과 요약 (9.2.3(1))
-              </label>
-              <textarea
-                value={content.resultsSummary}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, resultsSummary: e.target.value }))
-                }
-                rows={3}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="검증/유효성확인 결과 요약 (9.2.3(1))"
+              value={content.resultsSummary}
+              onChange={(v) => setContent((c) => ({ ...c, resultsSummary: v }))}
+              rows={3}
+            />
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium text-gray-700">
@@ -135,19 +137,14 @@ export default function VerificationReportPage() {
             </div>
 
             {content.complianceStatus === "불부합" && (
-              <div className="flex flex-col gap-1 rounded border border-amber-200 bg-amber-50 p-3">
-                <label className="text-sm font-medium text-gray-700">
-                  불부합 시 조치 (9.2.3(3) — 요구조건/적용사양에 부합하도록 설계 변경)
-                </label>
-                <textarea
+              <div className="rounded border border-amber-200 bg-amber-50 p-3">
+                <MarkdownField
+                  label="불부합 시 조치 (9.2.3(3) — 요구조건/적용사양에 부합하도록 설계 변경)"
                   value={content.nonComplianceAction}
-                  onChange={(e) =>
-                    setContent((c) => ({ ...c, nonComplianceAction: e.target.value }))
-                  }
+                  onChange={(v) => setContent((c) => ({ ...c, nonComplianceAction: v }))}
                   rows={2}
-                  className="rounded border border-gray-300 px-2 py-1.5 text-sm"
                 />
-                <p className="text-xs text-amber-700">
+                <p className="mt-1 text-xs text-amber-700">
                   설계변경이 필요하면 F702-7 설계변경요청서를 작성한 뒤 아래에서 연결하세요.
                 </p>
               </div>

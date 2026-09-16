@@ -6,10 +6,12 @@ import { useParams } from "next/navigation";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProtectedShell from "@/components/ProtectedShell";
+import DocumentActionBar from "@/components/DocumentActionBar";
 import DocumentMetaFields from "@/components/DocumentMetaFields";
 import DocumentSaveBar from "@/components/DocumentSaveBar";
 import RevisionHistoryTable from "@/components/RevisionHistoryTable";
 import LinkedItemsSelect from "@/components/LinkedItemsSelect";
+import MarkdownField from "@/components/MarkdownField";
 import { useDocumentRecord } from "@/lib/use-document-record";
 import type { F702_5_Content, Project, Standard } from "@/types";
 import { VALIDATION_METHODS } from "@/types";
@@ -85,13 +87,20 @@ export default function VerificationPlanPage() {
   return (
     <ProtectedShell>
       <div className="space-y-6">
-        <div>
-          <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
-            ← {project.name}
-          </Link>
-          <h1 className="mt-2 text-lg font-semibold text-gray-900">
-            F702-5 검증 및 유효성확인 계획서 — {project.name}
-          </h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
+              ← {project.name}
+            </Link>
+            <h1 className="mt-2 text-lg font-semibold text-gray-900">
+              F702-5 검증 및 유효성확인 계획서 — {project.name}
+            </h1>
+          </div>
+          <DocumentActionBar
+            projectId={projectId}
+            formPath="verification-plan"
+            active="edit"
+          />
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
@@ -105,28 +114,18 @@ export default function VerificationPlanPage() {
           />
 
           <div className="space-y-4 rounded border border-gray-200 bg-white p-4">
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">{TEXT_FIELDS[0].label}</label>
-              <textarea
-                value={content.protocolPurpose}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, protocolPurpose: e.target.value }))
-                }
-                rows={2}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">{TEXT_FIELDS[1].label}</label>
-              <textarea
-                value={content.proceduresAndSpecs}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, proceduresAndSpecs: e.target.value }))
-                }
-                rows={2}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label={TEXT_FIELDS[0].label}
+              value={content.protocolPurpose}
+              onChange={(v) => setContent((c) => ({ ...c, protocolPurpose: v }))}
+              rows={2}
+            />
+            <MarkdownField
+              label={TEXT_FIELDS[1].label}
+              value={content.proceduresAndSpecs}
+              onChange={(v) => setContent((c) => ({ ...c, proceduresAndSpecs: v }))}
+              rows={2}
+            />
 
             <LinkedItemsSelect
               label="④ 적용 규격 (규격/법규 마스터에서 선택)"
@@ -137,17 +136,13 @@ export default function VerificationPlanPage() {
             />
 
             {TEXT_FIELDS.slice(2).map((f) => (
-              <div key={f.key} className="flex flex-col gap-1">
-                <label className="text-sm font-medium text-gray-700">{f.label}</label>
-                <textarea
-                  value={content[f.key] as string}
-                  onChange={(e) =>
-                    setContent((c) => ({ ...c, [f.key]: e.target.value }))
-                  }
-                  rows={2}
-                  className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-                />
-              </div>
+              <MarkdownField
+                key={f.key}
+                label={f.label}
+                value={content[f.key] as string}
+                onChange={(v) => setContent((c) => ({ ...c, [f.key]: v }))}
+                rows={2}
+              />
             ))}
 
             <LinkedItemsSelect

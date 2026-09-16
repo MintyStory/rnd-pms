@@ -24,3 +24,137 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 문서형식보기 (A4 인쇄 뷰) */
+.print-root {
+  padding: 24px 0;
+  background: #e5e5e5;
+}
+
+.a4-page {
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto 24px;
+  padding: 20mm;
+  background: #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  color: #111;
+}
+
+.cover-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.management-mark {
+  text-align: right;
+  font-size: 12px;
+}
+
+.cover-title-block {
+  margin-top: 90px;
+  text-align: center;
+}
+
+.cover-form-code {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #666;
+}
+
+.cover-title {
+  margin-top: 10px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.cover-subtitle {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #444;
+}
+
+.revision-table {
+  margin-top: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.revision-table th,
+.revision-table td {
+  border: 1px solid #333;
+  padding: 5px 6px;
+  text-align: center;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #333;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: #555;
+}
+
+.content-block {
+  margin-bottom: 18px;
+  break-inside: avoid;
+}
+
+.content-block h3 {
+  border-left: 4px solid #333;
+  padding-left: 6px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.content-block p,
+.content-block li {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: #222;
+}
+
+.content-block ul {
+  list-style: disc;
+  padding-left: 20px;
+}
+
+.content-block ol {
+  list-style: decimal;
+  padding-left: 20px;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  body * {
+    visibility: hidden;
+  }
+  .print-root,
+  .print-root * {
+    visibility: visible;
+  }
+  .print-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+    background: #fff;
+  }
+  .a4-page {
+    box-shadow: none;
+    margin: 0;
+    page-break-after: always;
+  }
+  .a4-page:last-child {
+    page-break-after: auto;
+  }
+}

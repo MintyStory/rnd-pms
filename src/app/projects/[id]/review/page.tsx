@@ -6,10 +6,12 @@ import { useParams } from "next/navigation";
 import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProtectedShell from "@/components/ProtectedShell";
+import DocumentActionBar from "@/components/DocumentActionBar";
 import DocumentMetaFields from "@/components/DocumentMetaFields";
 import DocumentSaveBar from "@/components/DocumentSaveBar";
 import RevisionHistoryTable from "@/components/RevisionHistoryTable";
 import LinkedItemsSelect from "@/components/LinkedItemsSelect";
+import MarkdownField from "@/components/MarkdownField";
 import { useDocumentRecord } from "@/lib/use-document-record";
 import type { AppUser, DocumentRecord, F702_4_Content, Project } from "@/types";
 import { FORM_TYPE_LABEL, REVIEW_DECISIONS } from "@/types";
@@ -88,13 +90,16 @@ export default function ReviewDocumentPage() {
   return (
     <ProtectedShell>
       <div className="space-y-6">
-        <div>
-          <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
-            ← {project.name}
-          </Link>
-          <h1 className="mt-2 text-lg font-semibold text-gray-900">
-            F702-4 설계검토회의록 — {project.name}
-          </h1>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <Link href={`/projects/${projectId}`} className="text-xs text-blue-600 underline">
+              ← {project.name}
+            </Link>
+            <h1 className="mt-2 text-lg font-semibold text-gray-900">
+              F702-4 설계검토회의록 — {project.name}
+            </h1>
+          </div>
+          <DocumentActionBar projectId={projectId} formPath="review" active="edit" />
         </div>
 
         <form onSubmit={handleSave} className="space-y-6">
@@ -125,17 +130,12 @@ export default function ReviewDocumentPage() {
               onChange={(ids) => setContent((c) => ({ ...c, attendeeIds: ids }))}
             />
 
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">
-                ① 설계 및 개발검토의 기준
-              </label>
-              <textarea
-                value={content.reviewCriteria}
-                onChange={(e) => setContent((c) => ({ ...c, reviewCriteria: e.target.value }))}
-                rows={2}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="① 설계 및 개발검토의 기준"
+              value={content.reviewCriteria}
+              onChange={(v) => setContent((c) => ({ ...c, reviewCriteria: v }))}
+              rows={2}
+            />
 
             <LinkedItemsSelect
               label="② 검토한 문서 목록 (이 프로젝트에서 작성된 문서 중 선택)"
@@ -148,17 +148,12 @@ export default function ReviewDocumentPage() {
               emptyHint="이 프로젝트에 먼저 작성된 F702 문서가 없습니다."
             />
 
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">③ 요구사항 충족 증거</label>
-              <textarea
-                value={content.complianceEvidence}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, complianceEvidence: e.target.value }))
-                }
-                rows={3}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="③ 요구사항 충족 증거"
+              value={content.complianceEvidence}
+              onChange={(v) => setContent((c) => ({ ...c, complianceEvidence: v }))}
+              rows={3}
+            />
 
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium text-gray-700">
@@ -182,29 +177,19 @@ export default function ReviewDocumentPage() {
               </select>
             </div>
 
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">⑤ 수정한 내용</label>
-              <textarea
-                value={content.revisions}
-                onChange={(e) => setContent((c) => ({ ...c, revisions: e.target.value }))}
-                rows={2}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="⑤ 수정한 내용"
+              value={content.revisions}
+              onChange={(v) => setContent((c) => ({ ...c, revisions: v }))}
+              rows={2}
+            />
 
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-gray-700">
-                ⑥ 수정 사유 및 제안사항
-              </label>
-              <textarea
-                value={content.revisionReason}
-                onChange={(e) =>
-                  setContent((c) => ({ ...c, revisionReason: e.target.value }))
-                }
-                rows={2}
-                className="rounded border border-gray-300 px-2 py-1.5 text-sm"
-              />
-            </div>
+            <MarkdownField
+              label="⑥ 수정 사유 및 제안사항"
+              value={content.revisionReason}
+              onChange={(v) => setContent((c) => ({ ...c, revisionReason: v }))}
+              rows={2}
+            />
           </div>
 
           <DocumentSaveBar
