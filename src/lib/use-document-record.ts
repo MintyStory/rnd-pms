@@ -12,7 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
-import type { DocumentRecord, DocumentStatus, FormType } from "@/types";
+import type { Approval, DocumentRecord, DocumentStatus, FormType, UserRole } from "@/types";
 
 export function useDocumentRecord<TContent>(
   projectId: string,
@@ -28,6 +28,7 @@ export function useDocumentRecord<TContent>(
   const [reason, setReason] = useState("");
   const [dcoNo, setDcoNo] = useState("");
   const [saving, setSaving] = useState(false);
+  const [approvals, setApprovals] = useState<Approval[]>([]);
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -51,6 +52,7 @@ export function useDocumentRecord<TContent>(
         setStatus(record.status);
         setReviewerName(record.reviewerName ?? "");
         setApproverName(record.approverName ?? "");
+        setApprovals(record.approvals ?? []);
       }
     );
     return () => unsub();
@@ -97,6 +99,17 @@ export function useDocumentRecord<TContent>(
     }
   }
 
+  async function addApproval(role: UserRole) {
+    if (!docRecord) return;
+    const authorName = profile?.name ?? firebaseUser?.email ?? "알수없음";
+    const today = new Date().toISOString().slice(0, 10);
+    const next = [
+      ...(docRecord.approvals ?? []).filter((a) => a.role !== role),
+      { role, name: authorName, date: today },
+    ];
+    await updateDoc(doc(db, "documents", docRecord.id), { approvals: next });
+  }
+
   return {
     docRecord,
     content,
@@ -113,5 +126,7 @@ export function useDocumentRecord<TContent>(
     setDcoNo,
     saving,
     handleSave,
+    approvals,
+    addApproval,
   };
 }

@@ -14,6 +14,10 @@ const DOCUMENT_ROUTES: { formType: FormType; path: string }[] = [
   { formType: "F702-2", path: "input" },
   { formType: "F702-3", path: "output" },
   { formType: "F702-4", path: "review" },
+  { formType: "F702-5", path: "verification-plan" },
+  { formType: "F702-6", path: "verification-report" },
+  { formType: "F702-7", path: "change-request" },
+  { formType: "F702-8", path: "transfer" },
 ];
 
 export default function ProjectDetailPage() {

@@ -17,9 +17,8 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-lg font-semibold text-gray-900">대시보드</h1>
           <p className="text-sm text-gray-500">
-            Phase 3: F702-1 개발계획서 / F702-2 개발입력서 / F702-3 개발출력서 /
-            F702-4 설계검토회의록 작성 가능. F702-5~8(검증~이관)은 다음 단계에서
-            추가됩니다.
+            Phase 4: F702-1~8 전체 문서 작성 가능. F702-7/F702-8은 책임과 권한(4장)에
+            따른 역할 기반 승인(품질관리팀 / CEO+품질책임자)이 적용됩니다.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
