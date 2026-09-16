@@ -1,0 +1,25 @@
+# Next.js
+.next/
+out/
+node_modules/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+*.local
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Vercel
+.vercel/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local settings
+.claude/settings.local.json
