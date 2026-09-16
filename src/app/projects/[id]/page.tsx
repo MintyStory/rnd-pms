@@ -6,19 +6,9 @@ import { useParams } from "next/navigation";
 import { doc, onSnapshot, updateDoc, collection, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProtectedShell from "@/components/ProtectedShell";
-import type { AppUser, DocumentRecord, FormType, Product, Project } from "@/types";
-import { PROJECT_STATUSES, DOCUMENT_STATUS_LABEL, FORM_TYPE_LABEL } from "@/types";
-
-const DOCUMENT_ROUTES: { formType: FormType; path: string }[] = [
-  { formType: "F702-1", path: "plan" },
-  { formType: "F702-2", path: "input" },
-  { formType: "F702-3", path: "output" },
-  { formType: "F702-4", path: "review" },
-  { formType: "F702-5", path: "verification-plan" },
-  { formType: "F702-6", path: "verification-report" },
-  { formType: "F702-7", path: "change-request" },
-  { formType: "F702-8", path: "transfer" },
-];
+import type { AppUser, DocumentRecord, Product, Project } from "@/types";
+import { ALL_FORM_TYPES, PROJECT_STATUSES, DOCUMENT_STATUS_LABEL, FORM_TYPE_LABEL } from "@/types";
+import { FORM_TYPE_TO_PATH } from "@/lib/form-content-config";
 
 export default function ProjectDetailPage() {
   const params = useParams<{ id: string }>();
@@ -78,11 +68,19 @@ export default function ProjectDetailPage() {
   return (
     <ProtectedShell>
       <div className="space-y-6">
-        <div>
-          <Link href="/projects" className="text-xs text-blue-600 underline">
-            ← 프로젝트 목록
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <Link href="/projects" className="text-xs text-blue-600 underline">
+              ← 프로젝트 목록
+            </Link>
+            <h1 className="mt-2 text-lg font-semibold text-gray-900">{project.name}</h1>
+          </div>
+          <Link
+            href={`/projects/${projectId}/dhf`}
+            className="rounded border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            DHF 보기
           </Link>
-          <h1 className="mt-2 text-lg font-semibold text-gray-900">{project.name}</h1>
         </div>
 
         <div className="grid grid-cols-2 gap-4 rounded border border-gray-200 bg-white p-4 text-sm sm:grid-cols-4">
@@ -134,7 +132,7 @@ export default function ProjectDetailPage() {
               </tr>
             </thead>
             <tbody>
-              {DOCUMENT_ROUTES.map(({ formType, path }) => {
+              {ALL_FORM_TYPES.map((formType) => {
                 const d = documents.find((doc) => doc.formType === formType);
                 return (
                   <tr key={formType} className="border-b border-gray-100">
@@ -147,7 +145,7 @@ export default function ProjectDetailPage() {
                     <td className="py-2 pr-4">{d?.revisionHistory?.length ?? 0}</td>
                     <td className="py-2">
                       <Link
-                        href={`/projects/${projectId}/${path}`}
+                        href={`/projects/${projectId}/${FORM_TYPE_TO_PATH[formType]}`}
                         className="text-xs text-blue-600 underline"
                       >
                         {d ? "열기" : "작성"}

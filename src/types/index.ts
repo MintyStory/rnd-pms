@@ -137,6 +137,17 @@ export type FormType =
   | "F702-7"
   | "F702-8";
 
+export const ALL_FORM_TYPES: FormType[] = [
+  "F702-1",
+  "F702-2",
+  "F702-3",
+  "F702-4",
+  "F702-5",
+  "F702-6",
+  "F702-7",
+  "F702-8",
+];
+
 export const FORM_TYPE_LABEL: Record<FormType, string> = {
   "F702-1": "개발 계획서",
   "F702-2": "개발 입력서",

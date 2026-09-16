@@ -19,8 +19,9 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-lg font-semibold text-gray-900">대시보드</h1>
           <p className="text-sm text-gray-500">
-            Phase 4: F702-1~8 전체 문서 작성 가능. F702-7/F702-8은 책임과 권한(4장)에
-            따른 역할 기반 승인(품질관리팀 / CEO+품질책임자)이 적용됩니다.
+            Phase 5: 프로젝트 상세 화면의 &ldquo;DHF 보기&rdquo;에서 설계이력파일(DHF)
+            통합 뷰(문서 완결성 현황 + 전체 개정이력 타임라인)를 A4 인쇄/PDF로 확인할 수
+            있습니다.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
