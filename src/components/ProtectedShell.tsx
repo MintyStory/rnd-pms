@@ -9,6 +9,7 @@ import { useAuth } from "@/lib/auth-context";
 
 const NAV_ITEMS = [
   { href: "/", label: "대시보드" },
+  { href: "/projects", label: "프로젝트" },
   { href: "/masters/products", label: "제품" },
   { href: "/masters/standards", label: "규격/법규" },
   { href: "/masters/vendors", label: "외주업체" },

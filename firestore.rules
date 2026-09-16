@@ -25,5 +25,14 @@ service cloud.firestore {
     match /components/{docId} {
       allow read, write: if signedIn();
     }
+
+    // 프로젝트(개발과제) 및 F702 문서: Phase 2에서도 로그인 사용자 전체 CRUD.
+    // 문서 승인(4장 책임과 권한)에 따른 세분화된 통제는 Phase 4에서 강화한다.
+    match /projects/{docId} {
+      allow read, write: if signedIn();
+    }
+    match /documents/{docId} {
+      allow read, write: if signedIn();
+    }
   }
 }
