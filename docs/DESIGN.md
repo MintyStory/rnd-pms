@@ -128,8 +128,8 @@ F702-8(이관보고서)만: approved → transferred
 ## 5. 단계적 개발 로드맵
 
 - **Phase 0 (완료)** — 절차서 분석, 설계 문서 확정 (본 문서)
-- **Phase 1** — 프로젝트 스캐폴딩: Next.js+Firebase 초기화, GitHub 저장소, Vercel 연동, 로그인/역할기반 접근, 공통 마스터(users/products/standards/vendors/components) CRUD 화면
-- **Phase 2** — 프로젝트(개발과제) 생성/관리 + F702-1 개발계획서 입력
+- **Phase 1 (완료)** — 프로젝트 스캐폴딩: Next.js+Firebase 초기화, GitHub 저장소, Vercel 연동, 로그인, 공통 마스터(users/products/standards/vendors/components) CRUD 화면
+- **Phase 2 (완료)** — 프로젝트(개발과제) 생성/관리 + F702-1 개발계획서 입력
 - **Phase 3** — F702-2 입력서 / F702-3 출력서 / F702-4 검토회의록 (공통 헤더·승인 컴포넌트 재사용 검증)
 - **Phase 4** — F702-5/6 검증·유효성확인, F702-7 변경요청(영향평가 추적), F702-8 이관보고서 + 승인 워크플로우
 - **Phase 5** — DHF 통합 뷰(프로젝트별 전체 이력/추적성), 문서 PDF 출력
