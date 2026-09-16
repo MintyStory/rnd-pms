@@ -1,0 +1,29 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // 사용자 프로필: 로그인한 사용자 전체가 조회/수정 가능.
+    // 역할(role) 변경 권한 세분화 등은 이후 단계에서 강화한다.
+    match /users/{uid} {
+      allow read, write: if signedIn();
+    }
+
+    // 공통 마스터 데이터: Phase 1에서는 로그인한 사용자 전체에게 CRUD 허용.
+    match /products/{docId} {
+      allow read, write: if signedIn();
+    }
+    match /standards/{docId} {
+      allow read, write: if signedIn();
+    }
+    match /vendors/{docId} {
+      allow read, write: if signedIn();
+    }
+    match /components/{docId} {
+      allow read, write: if signedIn();
+    }
+  }
+}
