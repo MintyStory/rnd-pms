@@ -17,8 +17,9 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-lg font-semibold text-gray-900">대시보드</h1>
           <p className="text-sm text-gray-500">
-            Phase 2: 프로젝트(개발과제) 생성 및 F702-1 개발계획서 작성. 나머지 F702
-            문서(입력서~이관보고서)는 다음 단계에서 추가됩니다.
+            Phase 3: F702-1 개발계획서 / F702-2 개발입력서 / F702-3 개발출력서 /
+            F702-4 설계검토회의록 작성 가능. F702-5~8(검증~이관)은 다음 단계에서
+            추가됩니다.
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

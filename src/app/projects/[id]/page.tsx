@@ -6,8 +6,15 @@ import { useParams } from "next/navigation";
 import { doc, onSnapshot, updateDoc, collection, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ProtectedShell from "@/components/ProtectedShell";
-import type { AppUser, DocumentRecord, Product, Project } from "@/types";
-import { PROJECT_STATUSES, DOCUMENT_STATUS_LABEL } from "@/types";
+import type { AppUser, DocumentRecord, FormType, Product, Project } from "@/types";
+import { PROJECT_STATUSES, DOCUMENT_STATUS_LABEL, FORM_TYPE_LABEL } from "@/types";
+
+const DOCUMENT_ROUTES: { formType: FormType; path: string }[] = [
+  { formType: "F702-1", path: "plan" },
+  { formType: "F702-2", path: "input" },
+  { formType: "F702-3", path: "output" },
+  { formType: "F702-4", path: "review" },
+];
 
 export default function ProjectDetailPage() {
   const params = useParams<{ id: string }>();
@@ -63,8 +70,6 @@ export default function ProjectDetailPage() {
       </ProtectedShell>
     );
   }
-
-  const plan = documents.find((d) => d.formType === "F702-1");
 
   return (
     <ProtectedShell>
@@ -125,21 +130,28 @@ export default function ProjectDetailPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-100">
-                <td className="py-2 pr-4">F702-1 개발 계획서</td>
-                <td className="py-2 pr-4">
-                  {plan ? DOCUMENT_STATUS_LABEL[plan.status] : "미작성"}
-                </td>
-                <td className="py-2 pr-4">{plan?.revisionHistory?.length ?? 0}</td>
-                <td className="py-2">
-                  <Link
-                    href={`/projects/${projectId}/plan`}
-                    className="text-xs text-blue-600 underline"
-                  >
-                    {plan ? "열기" : "작성"}
-                  </Link>
-                </td>
-              </tr>
+              {DOCUMENT_ROUTES.map(({ formType, path }) => {
+                const d = documents.find((doc) => doc.formType === formType);
+                return (
+                  <tr key={formType} className="border-b border-gray-100">
+                    <td className="py-2 pr-4">
+                      {formType} {FORM_TYPE_LABEL[formType]}
+                    </td>
+                    <td className="py-2 pr-4">
+                      {d ? DOCUMENT_STATUS_LABEL[d.status] : "미작성"}
+                    </td>
+                    <td className="py-2 pr-4">{d?.revisionHistory?.length ?? 0}</td>
+                    <td className="py-2">
+                      <Link
+                        href={`/projects/${projectId}/${path}`}
+                        className="text-xs text-blue-600 underline"
+                      >
+                        {d ? "열기" : "작성"}
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
